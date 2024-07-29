@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="cs">
+    <head>
+        
+        <title>Flashcards</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" >
+        <meta name="author" content="Jakub Mamica">
+        <meta name="description" content="stránka pro úpravy slov objevujících se v testu.">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        
+        
+        <link rel="stylesheet" href="style.css">
+        
+       
+    </head>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script>
+        
+        $(document).ready(function() {
+            var engSlova=[];
+            var deSlova=[];
+            var plSlova=[];
+
+            $.getJSON("engData.json", function(data) {
+                engSlova=data;
+                 console.log(engSlova);
+                for(let i = 0; i < engSlova.length; i++){
+                addWord(engSlova[i][0],engSlova[i][1],engSlova[i][2],"eng");
+                 }
+             });
+
+             $.getJSON("plData.json", function(data) {
+                plSlova=data;
+                 console.log(plSlova);
+                for(let i = 0; i < plSlova.length; i++){
+                addWord(plSlova[i][0],plSlova[i][1],plSlova[i][2],"pl");
+                 }
+             })           
+
+
+             $.getJSON("deData.json", function(data) {
+                deSlova=data;
+                 console.log(deSlova);
+                for(let i = 0; i < deSlova.length; i++){
+                addWord(deSlova[i][0],deSlova[i][1],deSlova[i][2],"de");
+                 }
+             })
+
+             $("#engAdd").click(function(){
+			    let cz=document.getElementById('cz').value
+                let eng=document.getElementById('eng').value
+                if(cz==""||eng==""){
+                alert("vyplňte obě pole");
+                }    else{
+                let entry=[cz,eng,"s"];
+                engSlova.push(entry);
+                addWord(cz,eng,"s","eng");
+                
+                document.getElementById('cz').value="";
+                document.getElementById('eng').value="";
+                }
+                console.log(JSON.stringify(engSlova));
+			$.post( "./jsonEngSave.php", {data:JSON.stringify(engSlova)} );          
+		    });
+
+            $("#deAdd").click(function(){
+			    let cz=document.getElementById('decz').value
+                let de=document.getElementById('de').value
+                if(cz==""||de==""){
+                alert("vyplňte obě pole");
+                }    else{
+                let entry=[cz,de,"s"];
+                deSlova.push(entry);
+                addWord(cz,de,"s","de");
+                document.getElementById('decz').value="";
+                document.getElementById('de').value="";
+                }
+			$.post( "./jsonDeSave.php", {data:JSON.stringify(deSlova)} );          
+		    });
+
+            
+            $("#plAdd").click(function(){
+			    let cz=document.getElementById('plcz').value
+                let pl=document.getElementById('pl').value
+                if(cz==""||pl==""){
+                alert("vyplňte obě pole");
+                }    else{
+                let entry=[cz,pl,"s"];
+                plSlova.push(entry);
+                addWord(cz,pl,"s","pl");
+                document.getElementById('plcz').value="";
+                document.getElementById('pl').value="";
+                }
+			$.post( "./jsonPlSave.php", {data:JSON.stringify(plSlova)} );          
+		    });
+
+            
+
+
+            function addWord(term1,term2,term3,term4){
+
+
+                var entry=$("<div id='entry'></div>");
+                if(term4=="eng"){entry.text("cz: "+term1 +" eng: "+ term2);}
+                else if(term4=="de"){entry.text("cz: "+term1 +" de: "+ term2);}
+                else{entry.text("cz: "+term1 +" pl: "+ term2);}
+                var br=$("<br>");
+                entry.append(br);
+                var del=$("<input type='button' value='smazat' style='margin-top: 10px'>");
+                var hid=$("<input type='button' value='schovat' style='margin-top: 10px'>");
+                var shw=$("<input type='button' value='odkrýt' style='margin-top: 10px'>");
+                entry.append(del);
+               if(term3=="s"){
+                entry.append(hid);
+               }
+               else{entry.append(shw);}
+
+               if(term4=="eng"){
+                     hid.click(function(){
+                    for(let i = 0; i < engSlova.length; i++){
+                        if(term1==engSlova[i][0]&&term2==engSlova[i][1]){
+                            engSlova[i][2]="h";
+                            console.log(engSlova);
+                            $.post( "./jsonEngSave.php", {data:JSON.stringify(engSlova)});
+                            $('#engList').children().remove();
+                            for(let i = 0; i < engSlova.length; i++){
+                            addWord(engSlova[i][0],engSlova[i][1],engSlova[i][2],"eng");
+                             }
+                            
+                        }} 
+                });}
+                else if(term4=="de"){ 
+                    hid.click(function(){
+                    for(let i = 0; i < deSlova.length; i++){
+                        if(term1==deSlova[i][0]&&term2==deSlova[i][1]){
+                            deSlova[i][2]="h";
+                            console.log(deSlova);
+                            $.post( "./jsonDeSave.php", {data:JSON.stringify(deSlova)});
+                            $('#deList').children().remove();
+                            for(let i = 0; i < deSlova.length; i++){
+                            addWord(deSlova[i][0],deSlova[i][1],deSlova[i][2],"de");
+                             }
+                            
+                        }} 
+                });}
+                else{ hid.click(function(){
+                    for(let i = 0; i < plSlova.length; i++){
+                        if(term1==plSlova[i][0]&&term2==plSlova[i][1]){
+                            plSlova[i][2]="h";
+                            console.log(plSlova);
+                            $.post( "./jsonPlSave.php", {data:JSON.stringify(plSlova)});
+                            $('#plList').children().remove();
+                            for(let i = 0; i < plSlova.length; i++){
+                            addWord(plSlova[i][0],plSlova[i][1],plSlova[i][2],"pl");
+                             }
+                            
+                        }} 
+                });
+                }
+
+                if(term4=="eng"){
+                    shw.click(function(){
+                    for(let i = 0; i < engSlova.length; i++){
+                        if(term1==engSlova[i][0]&&term2==engSlova[i][1]){
+                            engSlova[i][2]="s";
+                            console.log(engSlova[i][2]);
+                            $.post( "./jsonEngSave.php", {data:JSON.stringify(engSlova)});
+                            $('#engList').children().remove();
+                            for(let i = 0; i < engSlova.length; i++){
+                            addWord(engSlova[i][0],engSlova[i][1],engSlova[i][2],"eng");
+                             }
+                            
+                        }} 
+                });}
+                else if(term4=="de"){
+                    shw.click(function(){
+                    for(let i = 0; i < deSlova.length; i++){
+                        if(term1==deSlova[i][0]&&term2==deSlova[i][1]){
+                            deSlova[i][2]="s";
+                            console.log(deSlova[i][2]);
+                            $.post( "./jsonDeSave.php", {data:JSON.stringify(deSlova)});
+                            $('#deList').children().remove();
+                            for(let i = 0; i < deSlova.length; i++){
+                            addWord(deSlova[i][0],deSlova[i][1],deSlova[i][2],"de");
+                             }
+                            
+                        }} 
+                });}
+                else{
+                    shw.click(function(){
+                    for(let i = 0; i < plSlova.length; i++){
+                        if(term1==plSlova[i][0]&&term2==plSlova[i][1]){
+                            plSlova[i][2]="s";
+                            console.log(plSlova[i][2]);
+                            $.post( "./jsonPlSave.php", {data:JSON.stringify(plSlova)});
+                            $('#plList').children().remove();
+                            for(let i = 0; i < plSlova.length; i++){
+                            addWord(plSlova[i][0],plSlova[i][1],plSlova[i][2],"pl");
+                             }
+                            
+                        }} 
+                });
+                }
+
+                
+
+
+                if(term4=="eng"){del.click(function(){
+                    
+                    for(let i = 0; i < engSlova.length; i++){
+                        
+                        if(term1==engSlova[i][0]&&term2==engSlova[i][1]){
+                            console.log(term1);
+                            engSlova.splice(i,1);
+                            console.log(engSlova);
+                            $.post( "./jsonEngSave.php", {data:JSON.stringify(engSlova)});
+                            $('#engList').children().remove();
+                            for(let i = 0; i < engSlova.length; i++){
+                            addWord(engSlova[i][0],engSlova[i][1],engSlova[i][2],"eng");
+                             }
+                            
+                        }}
+
+                });}
+                else if(term4=="de"){del.click(function(){
+                    
+                    for(let i = 0; i < deSlova.length; i++){
+                        
+                        if(term1==deSlova[i][0]&&term2==deSlova[i][1]){
+                            console.log(term1);
+                            deSlova.splice(i,1);
+                            console.log(deSlova);
+                            $.post( "./jsonDeSave.php", {data:JSON.stringify(deSlova)});
+                            $('#deList').children().remove();
+                            for(let i = 0; i < deSlova.length; i++){
+                            addWord(deSlova[i][0],deSlova[i][1],deSlova[i][2],"de");
+                             }
+                            
+                        }}
+
+                });}
+                else{del.click(function(){
+                    
+                    for(let i = 0; i < plSlova.length; i++){
+                        
+                        if(term1==plSlova[i][0]&&term2==plSlova[i][1]){
+                            console.log(term1);
+                            plSlova.splice(i,1);
+                            console.log(plSlova);
+                            $.post( "./jsonPlSave.php", {data:JSON.stringify(plSlova)});
+                            $('#plList').children().remove();
+                            for(let i = 0; i < plSlova.length; i++){
+                            addWord(plSlova[i][0],plSlova[i][1],plSlova[i][2],"pl");
+                             }
+                            
+                        }}
+
+                });}
+
+                
+                if(term4=="eng"){$("#engList").append(entry);}
+                else if(term4=="de"){$("#deList").append(entry);}
+                else{$("#plList").append(entry);}
+                
+                
+                
+            }
+
+            })
+            
+        </script>
+    <body >
+        <header>
+        <h1 >Seznam kartiček</h1>
+        </header>
+        <main>
+        <div id="main1">
+            <div>
+                <form id="engForm" class="Form" >
+                    <label>Český výraz</label><br>
+                    <input type="input" name="cz" id="cz"><br>
+                    <label>Anglický výraz</label><br>
+                    <input type="input" name="eng" id="eng"><br>
+                    
+                    <input class="click" id="engAdd" type="button" value="přidat výraz do seznamu" >
+                    
+                </form>
+                
+                <div id="container" >
+                    <div  id="engList" class="list"></div>
+                </div>
+            </div>
+            <div>
+            <form id="deForm" class="Form" >
+                <label>Český výraz</label><br>
+                <input type="input" name="decz" id="decz"><br>
+                <label>Německý výraz</label><br>
+                <input type="input" name="de" id="de"><br>
+                
+                <input class="click" id="deAdd" type="button" value="přidat výraz do seznamu" >
+                
+            </form>
+            
+            <div id="container" >
+                <div  id="deList" class="list"></div>
+            </div>
+            </div>
+            <div>
+                <form id="plForm" class="Form" >
+                    <label>Český výraz</label><br>
+                    <input type="input" name="plcz" id="plcz"><br>
+                    <label>Polský výraz</label><br>
+                    <input type="input" name="pl" id="pl"><br>
+                    
+                    <input class="click" id="plAdd" type="button" value="přidat výraz do seznamu" >
+                    
+                </form>
+                
+                <div id="container" >
+                    <div  id="plList" class="list"></div>
+                </div>
+                </div>
+        </div>
+
+            <a href="index.html" id="goMain">Na hlavní stránku.</a>
+        </main>
+
+            <footer>
+                <p>Author: Jakub Mamica</p>
+                <p><a href="mailto:mamj01@vse.cz" id="mail" >mamj01@vse.cz</a></p>
+            </footer>
+    </body>
+    
+</html>

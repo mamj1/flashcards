@@ -1,0 +1,142 @@
+*{font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    
+
+}
+ h1{
+    width: 260px;
+    background-color: beige;
+    border-radius: 15px;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 50px;
+    margin-top: 30px;
+    padding: 30px;
+    border: black 2px solid;
+}
+ #main1{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+ #main1 a{
+    font-weight: 700;
+     margin-left: 20px;
+     text-align: center;
+    padding:30px;
+    background-color: beige;
+    border-radius: 15px;
+    width: 120px;
+    color: black;
+    text-decoration: none;
+    border: black 2px solid;
+}
+ #mail{
+    color: black;
+    text-decoration: none;
+}
+ #czTerm{
+    margin: auto;
+    margin-bottom: 30px;
+     font-weight: 700;
+     text-align: center;
+    padding:20px;
+    background-color: beige;
+    border-radius: 5px;
+    width: 120px;
+    color: black;
+    text-decoration: none;
+    border: black 2px solid;
+}
+ #engTerm{
+    background-color: rgb(251, 251, 248);
+    border-radius: 2px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 30px
+}
+ #answer{
+    margin: auto;
+    margin-bottom: 30px;
+     font-weight: 700;
+     text-align: center;
+    padding:20px;
+    background-color: beige;
+    border-radius: 5px;
+    width: 300px;
+    height: 30px;
+     color: black;
+    text-decoration: none;
+    border: black 2px solid;
+}
+ #goMain{
+    color: black;
+    text-decoration: none;
+    background-color: beige;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    width: 50px;
+    border: black 2px solid;
+}
+ #btns{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+#btns2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+ .btn{
+    font-weight: 700;
+     text-align: center;
+    padding:20px;
+    margin: 10px;
+    background-color: beige;
+    border-radius: 5px;
+    width: 120px;
+    color: black;
+    text-decoration: none;
+    border: black 2px solid;
+}
+ #entry{
+    margin: auto;
+     font-weight: 700;
+     text-align: center;
+    padding:30px;
+    background-color: beige;
+    border-radius: 15px;
+    width: 150px;
+    color: black;
+    text-decoration: none;
+    border: black 2px solid;
+}
+ .list{
+    width: 260px;
+}
+ .click{
+    margin-top: 10px;
+    width: 165px;
+}
+ .Form{
+    margin: auto;
+     font-weight: 700;
+     text-align: center;
+    padding:30px;
+    background-color: beige;
+    border-radius: 15px;
+    width: 150px;
+    color: black;
+    text-decoration: none;
+    border: black 2px solid;
+}
+ #container{
+    display: flex;
+    justify-content: center;
+}

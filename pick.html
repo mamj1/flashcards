@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="cs">
+    <head>
+        
+        <title>Flashcards</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" >
+        <meta name="author" content="Jakub Mamica">
+        <meta name="description" content="test slovíček z angličtiny formou flashcards.">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        
+        
+       <link rel="stylesheet" href="style.css">
+        
+       
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    
+        <script>
+        
+        $(document).ready(function() {
+            localStorage.removeItem("lng");
+            localStorage.removeItem("pro");
+            
+
+            
+
+            if(localStorage.getItem('prog')!=null){
+                var btn=$("<div  id='btnEngProg' class='btn' >Pokračovat v Anglickém testu.</div>")
+                btn.click(function(){localStorage.setItem("lng","eng");
+                localStorage.setItem("pro","1");window.location.href = "test.html";})
+                $('#btns2').append(btn);
+                
+               
+            }
+            if(localStorage.getItem('deprog')!=null){
+                var btn=$("<div  id='btnEngProg' class='btn' >Pokračovat v Německém testu.</div>")
+                btn.click(function(){localStorage.setItem("lng","de");
+                localStorage.setItem("pro","1");window.location.href = "test.html";})
+                $('#btns2').append(btn);
+                
+            }
+            if(localStorage.getItem('plprog')!=null){
+                var btn=$("<div  id='btnEngProg' class='btn' >Pokračovat v Polském testu.</div>")
+                btn.click(function(){localStorage.setItem("lng","pl");
+                localStorage.setItem("pro","1");window.location.href = "test.html";});
+                 $('#btns2').append(btn);
+                
+            }
+
+            $("#btnEng").click(function(){
+               localStorage.setItem("lng","eng"); 
+                window.location.href = "test.html";
+            })
+            $("#btnDe").click(function(){
+               localStorage.setItem("lng","de"); 
+                window.location.href = "test.html";
+            })
+            $("#btnPl").click(function(){
+                localStorage.setItem("lng","pl"); 
+                window.location.href = "test.html";
+            })
+
+            
+
+            $("#goMain").click(function(){
+               
+                window.location.href = "index.html";
+
+            })
+            
+        })
+    
+
+        </script>
+        </head>
+    <body >
+        <header>
+            <h1>Vyberte jazyk</h1>
+        </header>
+        <main>
+            
+            
+        <div id="btns" >
+            <div  id="btnEng" class="btn" >Nový test Anglický</div>
+            <div  id="btnDe" class="btn" >Nový test Německý</div>
+            <div  id="btnPl" class="btn" >Nový test Polský</div>
+        </div>
+        <div id="btns2"></div>
+
+
+        <div id="goMain" >Zpět<div>
+        </main>
+
+            <footer>
+                <p>Author: Jakub Mamica</p>
+                <p><a href="mailto:mamj01@vse.cz" id="mail" >mamj01@vse.cz</a></p>
+            </footer>
+    </body>
+    
+</html>
+

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="cs">
+    <head>
+        
+        <title>Flashcards</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" >
+        <meta name="author" content="Jakub Mamica">
+        <meta name="description" content="test slovíček z angličtiny formou flashcards.">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        
+        
+       <link rel="stylesheet" href="style.css">
+        
+       
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    
+        <script>
+        
+        $(document).ready(function() {
+            var slova=[];
+            var czNum=0;
+            var btn=1;
+
+            
+
+            function loadRandom (x){
+                    if(slova.length==0){
+                         alert("Hotovo, vše jsi přeložil.");
+
+                         if(localStorage.getItem('lng')=="eng"){ localStorage.removeItem('prog');}
+                        else if(localStorage.getItem('lng')=="de"){ localStorage.removeItem('deprog');}
+                        else{localStorage.removeItem('plprog');}
+                         
+
+                         window.location.href='index.html';
+                         return "";
+                     }else{
+                czNum=Math.floor(Math.random() * x.length);
+                console.log(czNum); 
+                return x[czNum][0]}
+            }
+
+            
+            
+
+            if(localStorage.getItem('lng')=="eng"){
+            $.getJSON("engData.json", function(data)
+            {  
+                if(localStorage.getItem('pro')=="1"){
+                
+                slova=JSON.parse(localStorage.getItem('prog'));
+                document.getElementById("czTerm").innerHTML = loadRandom(slova);
+                }
+                 else {
+                    slova=data;
+                    console.log(JSON.stringify(slova));
+                    for(let i = 0; i < slova.length; i=i+1){
+                        console.log(slova[i][0]);
+                        if(slova[i][2]=="h"){slova.splice(i,1);i--;}
+                    }
+                    console.log(slova);
+                    console.log("aa");
+                    document.getElementById("czTerm").innerHTML = loadRandom(slova);
+                }
+            });
+            }else if(localStorage.getItem('lng')=="de"){
+            $.getJSON("deData.json", function(data)
+            {  
+                if(localStorage.getItem('pro')=="1"){
+                
+                slova=JSON.parse(localStorage.getItem('deprog'));
+                document.getElementById("czTerm").innerHTML = loadRandom(slova);
+                }
+                 else {
+                    slova=data;
+                    for(let i = 0; i < slova.length; i++){
+                        if(slova[i][2]=="h"){slova.splice(i,1);i--;}
+                    }
+                    document.getElementById("czTerm").innerHTML = loadRandom(slova);
+                }
+            });
+            }else if(localStorage.getItem('lng')=="pl"){
+                $.getJSON("plData.json", function(data)
+            {  
+                if(localStorage.getItem('pro')=="1"){
+                
+                slova=JSON.parse(localStorage.getItem('plprog'));
+                document.getElementById("czTerm").innerHTML = loadRandom(slova);
+                }
+                 else {
+                    slova=data;
+                    for(let i = 0; i < slova.length; i++){
+                        console.log(slova[i][0]);
+                        if(slova[i][2]=="h"){slova.splice(i,1);i--;}
+                    }
+                    console.log(slova);
+                    document.getElementById("czTerm").innerHTML = loadRandom(slova);
+                }
+            });
+            }
+            else{window.location.href='index.html';}
+
+            
+
+            $("#goMain").click(function(){
+                if(localStorage.getItem('lng')=="eng"){ localStorage.setItem("prog",JSON.stringify(slova));}
+                else if(localStorage.getItem('lng')=="de"){ localStorage.setItem("deprog",JSON.stringify(slova));}
+                else{ localStorage.setItem("plprog",JSON.stringify(slova));}
+               
+                window.location.href = "index.html";
+
+            })
+
+
+            $("#btnNext").click(function() {
+                if(btn==1){
+                var engTerm = document.getElementById('engTerm').value;
+                if(slova[czNum][1]==engTerm){
+                    document.getElementById("answer").innerHTML="Správně.";
+                    slova.splice(czNum,1);
+                }
+                else{document.getElementById("answer").innerHTML = "Špatně překlad "+slova[czNum][0]+" je "+ slova[czNum][1]+"."}
+                btn=2;
+                document.getElementById("btnNext").innerHTML = "Další";
+                }
+                else{
+                document.getElementById("czTerm").innerHTML = loadRandom(slova);
+                document.getElementById("answer").innerHTML = "Zde se ti zobrazí výsledek kontroly.";
+                document.getElementById('engTerm').value="";
+                btn=1;
+                document.getElementById("btnNext").innerHTML = "Zkontrolovat.";
+                }
+            });
+            
+
+           
+            
+        })
+    
+
+        </script>
+        </head>
+    <body >
+        <header>
+        <h1 >Test</h1>
+        </header>
+        <main>
+            <div id="czTerm" ></div>
+            <input type="text" id="engTerm" placeholder="Napište překlad" >
+            <div id="answer">Zde se ti zobrazí výsledek kontroly.</div>
+
+        <div id="btns" >
+            <div  id="btnNext" class="btn" >zkontrolovat</div>
+        </div>
+        <div id="goMain" >Ukončit test<div>
+        </main>
+
+            <footer>
+                <p>Author: Jakub Mamica</p>
+                <p><a href="mailto:mamj01@vse.cz" id="mail" >mamj01@vse.cz</a></p>
+            </footer>
+    </body>
+    
+</html>
+
